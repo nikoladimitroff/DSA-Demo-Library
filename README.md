@@ -11,3 +11,5 @@ the basic operations on several data structures.
 | Data structure  | Get | Append | Insert | RemoveAt  | Search |
 |-----------------|:---:|:------:|:------:|:---------:|:------:|
 | Sequential List (Dynamic Array)  | `O(1)`  | `O(1)`<sub>A</sub> | `O(n)` | `O(n)` | `O(n)` |
+
+* Subscript <sub>A</sub> means that the complexity is amortized.
