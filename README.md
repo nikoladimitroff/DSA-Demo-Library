@@ -8,8 +8,11 @@ The following table summarizes what we already know about the algorithmic comple
 the basic operations on several data structures.
 
 
-| Data structure  | Get | Append | Insert | RemoveAt  | Search |
-|-----------------|:---:|:------:|:------:|:---------:|:------:|
-| Sequential List (Dynamic Array)  | `O(1)`  | `O(1)`<sub>A</sub> | `O(n)` | `O(n)` | `O(n)` |
+| Data structure  | Get | Append | Insert | RemoveAt  | Search | Random Access? |
+|-----------------|:---:|:------:|:------:|:---------:|:------:|:------:|
+| Sequential List (Dynamic Array)  | `O(1)`  | `O(1)`<sub>A</sub> | `O(n)` | `O(n)` | `O(n)` | True |
+| Linked List | `O(n)`  | `O(1)` | `O(1)` | `O(1)` | `O(n)` | True |
+| Stack | `O(1)`  | `O(1)` | `-` | `O(1)` | `-` | False |
+| Stack | `O(1)`  | `O(1)` | `-` | `O(1)` | `-` | False |
 
 * Subscript <sub>A</sub> means that the complexity is amortized.

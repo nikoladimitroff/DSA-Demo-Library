@@ -31,6 +31,13 @@ public class SequentialList {
         this.elementCount++;
     }
     
+    public void removeAt(int index) {
+        for (int i = index; i < this.elementCount - 1; i++) {
+            this.array[i] = this.array[i + 1]; 
+        }
+        this.elementCount--;
+    }
+    
     public int get(int index)
     {
         return this.array[index];
