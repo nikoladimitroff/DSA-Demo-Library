@@ -16,3 +16,16 @@ the basic operations on several data structures.
 | Queue | `O(1)`  | `O(1)` | `-` | `O(1)` | `-` | False |
 
 * Subscript <sub>A</sub> means that the complexity is amortized.
+
+## Standard library implementations
+The following table summarizes the standard implementations (if any) of several data structures
+data structures in the most popular programming languages' standard libraries.
+
+
+| Language  | SequentialList | LinkedList | Stack | Queue  | Dictionary | Set |
+|-----------------|:---:|:------:|:------:|:---------:|:------:|:------:|
+| C++ | `vector `  | `list` | `stack` | `queue` | `unordered_map` | `unordered_set` |
+| Java | `ArrayList`  | `LinkedList` | `Stack` | `Queue` | `Map` | `Set` |
+| C# | `List`  | `LinkedList` | `Stack` | `Queue` | `Dictionary` | `HashSet` |
+| Python | `list`  | `-` | `-` | `-` | `dict` | `set` |
+| JavaScript | `Array`  | `-` | `Array` | `Array` | `Object` | `-` |
