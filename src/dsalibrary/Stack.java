@@ -20,19 +20,18 @@ public class Stack {
         this.container = new SequentialList();
     }
     
-    // Returns the top of the stack
-    int peek() {
-        return container.get(container.size() - 1);
+    public void push(int element) {
+        this.container.add(element);
     }
     
     public int pop() {
-        int element = this.peek();
-        container.removeAt(container.size() - 1);
-        return element;
+        int value = this.peek();
+        this.container.removeAt(this.container.size() - 1);
+        return value;
     }
     
-    public void push(int element) {
-        this.container.add(element);
+    public int peek() {
+        return this.container.get(this.container.size() - 1);
     }
     
     public int size() {
