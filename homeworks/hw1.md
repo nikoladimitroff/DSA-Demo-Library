@@ -37,7 +37,7 @@ public interface FileEncoderFN {
      * @param destinationFile - path to the result file
      * @param key - list of replacement bytes
      */
-    public void encode(String sourceFile, String destinationFile, LinkedList<Byte> key);
+    public void encode(String sourceFile, String destinationFile, LinkedList<Character> key);
     
     /**
      * Decodes a file that was encoded with the above algorithm.
@@ -45,7 +45,7 @@ public interface FileEncoderFN {
      * @param destinationFile - path to the result file
      * @param key - list of replacement bytes that were used to encode the file
      */
-    public void decode(String encodedFile, String destinationFile, LinkedList<Byte> key);
+    public void decode(String encodedFile, String destinationFile, LinkedList<Character> key);
 }
 ```
 If your faculty number is *123456* then your class should be called `FileEncoder123456`.
@@ -57,8 +57,9 @@ Your task is to implement the encryption and decryption methods described above
 using the following algorithm:
 
 ```
-For each byte b in the source file:
-    if b is a prime number or 1:
+For i = 0, i < sourceFile.lengthInBytes, i++
+    char b = sourceFile[i]
+    if i is a prime number or 1:
         write b to the destination file as is
     else:
         write to the destination file the value of the b-th element of the key
@@ -99,7 +100,7 @@ if (performance > 0.85)
 else if (performance > 0.7)
     grade = 5;
 else if (performance > 0.6)
-    grade = 6;
+    grade = 4;
 else if (performance > 0.5)
     grade = 3;
 ```
