@@ -14,6 +14,7 @@ the basic operations on several data structures.
 | Linked List | `O(n)`  | `O(1)` | `O(1)` | `O(1)` | `O(n)` | True |
 | Stack | `O(1)`  | `O(1)` | `-` | `O(1)` | `-` | False |
 | Queue | `O(1)`  | `O(1)` | `-` | `O(1)` | `-` | False |
+| HashMap | `O(1)`  | `O(1)`<sub>A</sub> | `O(1)`<sub>A</sub> | `O(1)` | `O(1)` | False |
 
 * Subscript <sub>A</sub> means that the complexity is amortized.
 
@@ -22,10 +23,10 @@ The following table summarizes the standard implementations (if any) of several 
 data structures in the most popular programming languages' standard libraries.
 
 
-| Language  | SequentialList | LinkedList | Stack | Queue  | Dictionary | Set |
+| Language  | SequentialList | LinkedList | Stack | Queue  | HashMap | Set |
 |-----------------|:---:|:------:|:------:|:---------:|:------:|:------:|
 | C++ | `vector `  | `list` | `stack` | `queue` | `unordered_map` | `unordered_set` |
-| Java | `ArrayList`  | `LinkedList` | `Stack` | `Queue` | `Map` | `Set` |
+| Java | `ArrayList`  | `LinkedList` | `Stack` | `Queue` | `HashMap` | `HashSet` |
 | C# | `List`  | `LinkedList` | `Stack` | `Queue` | `Dictionary` | `HashSet` |
 | Python | `list`  | `-` | `-` | `-` | `dict` | `set` |
 | JavaScript | `Array`  | `-` | `Array` | `Array` | `Object` | `-` |
