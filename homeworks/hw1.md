@@ -8,14 +8,15 @@ where **groupNumber** is your group and **fn** is your faculty number.
 Upload the archive to moodle.
 
 This is ok: ***group1.66666.hw1.zip***
+
 This is not: ***domashno1.rar***
 
-Your zip archive must contain only **.java** files - no folder, no other files.
+Your zip archive must contain only **.java** files - no folders, no other files.
 
 Additionally, **you'll improve your grade** by +1 if you commit your work in github
 and +2 if you send us a pull a request at 
 * https://github.com/NikolaDimitroff/DSA-Demo-Library for groups 1 and 2
-* https://github.com/NikolaDimitroff/DSA-Demo-Library for groups 4 and 5
+* https://github.com/jorenca/SDA-Tasks for groups 4 and 5
 
 ## Task - File Encryption
 
@@ -65,6 +66,7 @@ For each byte b in the source file:
 Here's an example. Let's say you are given the following source file and key:
 
 **Source file**: 4 3 ...
+
 **Key**: 255 254 253 252 251 ...
 
 Then the output file should start like this:
@@ -103,6 +105,7 @@ else if (performance > 0.5)
 ```
 
 If any of your tests gives a wrong result, you'll get 0 points for it.
+
 If you cheat by copying your solution from a classmate or the internet, you'll get 0
 points for the **ALL** tests.
 
