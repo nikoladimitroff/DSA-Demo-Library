@@ -66,16 +66,19 @@ For i = 0, i < sourceFile.lengthInBytes, i++
 ```
 Here's an example. Let's say you are given the following source file and key:
 
-**Source file**: 4 3 ...
+**Source file**: 4 3 2 0 5...
 
-**Key**: 255 254 253 252 251 ...
+**Key**: 123 101 111 222 251 42...
 
 Then the output file should start like this:
 
-**Output**: 251 3 ...
+**Output**: 251 3 2 0 42 ...
 
-Since 4 is not a prime, we replace it with the 4th element of the key (251).
-On the other hand, 3 is a prime number so we leave it as is.
+* i = 0 is not a prime, we replace it with the 4th element of the key (write 251 to the output).
+* i = 1 is a special case and fits in the prime number category, we leave it as is (write 3 to the output)
+* i = 2 is a prime, we leave it as is (write 2 to the output)
+* i = 3 is a prime, leave it as is (write 0 to the output)
+* i = 4 is not a prime, replace it with 5th element of the key (write 42 to the output)
 
 To put it another way:
 
@@ -88,7 +91,7 @@ Your class should be able to encode files in this manner and decode them accordi
 We'll run your solution on several tests and compare it with ours using the following
 formula:
 
-`performance = sum(yourSolutionTime[i] / authorSolutionTime[i]) / testCount`
+`performance = sum(authorSolutionTime[i] / yourSolutionTime[i]) / testCount`
 (`i` is for every test example)
 
 Your marks will be assigned using this sample code:
