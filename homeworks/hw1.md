@@ -88,7 +88,7 @@ Your class should be able to encode files in this manner and decode them accordi
 We'll run your solution on several tests and compare it with ours using the following
 formula:
 
-`performance = sum(yourSolutionTime[i] / authorSolutionTime[i]) / testCount`
+`performance = sum(authorSolutionTime[i] / yourSolutionTime[i]) / testCount`
 (`i` is for every test example)
 
 Your marks will be assigned using this sample code:
