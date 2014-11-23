@@ -1,17 +1,16 @@
 import java.io.*;
 import java.util.LinkedList;
 
-public class FileEncoder61735 implements FileEncoder {
+public class FileEncoder61735 implements FileEncoderFN {
 
    @java.lang.Override
-   public void encode(String inFile, String outFile, LinkedList<Character> key)
-         throws IOException {
+   public void encode(String sourceFile, String destinationFile, LinkedList<Character> key) {
       FileInputStream in = null;
       FileOutputStream out = null;
 
       try {
-         in = new FileInputStream(inFile);
-         out = new FileOutputStream(outFile);
+         in = new FileInputStream(sourceFile);
+         out = new FileOutputStream(destinationFile);
          int c;
          long counter = 0;
          while ((c = in.read()) != -1) {
@@ -26,23 +25,30 @@ public class FileEncoder61735 implements FileEncoder {
          e.printStackTrace();
       } finally {
          if (in != null) {
-            in.close();
+            try {
+               in.close();
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
          }
          if (out != null) {
-            out.close();
+            try {
+               out.close();
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
          }
       }
    }
 
    @java.lang.Override
-   public void decode(String encodedFile, String outFile, LinkedList<Character> key)
-         throws IOException {
+   public void decode(String encodedFile, String destinationFile, LinkedList<Character> key) {
       FileInputStream in = null;
       FileOutputStream out = null;
 
       try {
          in = new FileInputStream(encodedFile);
-         out = new FileOutputStream(outFile);
+         out = new FileOutputStream(destinationFile);
          int c;
          long counter = 0;
          while ((c = in.read()) != -1) {
@@ -57,10 +63,18 @@ public class FileEncoder61735 implements FileEncoder {
          e.printStackTrace();
       } finally {
          if (in != null) {
-            in.close();
+            try {
+               in.close();
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
          }
          if (out != null) {
-            out.close();
+            try {
+               out.close();
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
          }
       }
    }
