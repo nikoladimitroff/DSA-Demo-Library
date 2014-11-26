@@ -55,13 +55,13 @@ public class FileEncoder61735 implements FileEncoderFN {
             if (isPrime(counter) || counter == 1) {
                out.write(c);
             } else {
-               out.write(key.indexOf((char)c));
+               out.write(key.indexOf((char) c));
             }
             counter++;
          }
       } catch (IOException e) {
          e.printStackTrace();
-      } finally {
+      } finally      {
          if (in != null) {
             try {
                in.close();
@@ -80,13 +80,13 @@ public class FileEncoder61735 implements FileEncoderFN {
    }
 
    private boolean isPrime(long number) {
-      if (number == 0) {
+      if (number == 0 || number == 1) {
          return false;
       }
       if (number == 2) {
          return true;
       }
-      for (int i = 2; i * i < number; i++) {
+      for (int i = 2; i * i <= number; i++) {
          if (number % i == 0) {
             return false;
          }
