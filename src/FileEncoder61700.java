@@ -1,5 +1,7 @@
 package homework1;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,9 +30,10 @@ public class FileEncoder61700 implements FileEncoderFN {
 		}
 
 		try {
-			FileInputStream inputFileStream = new FileInputStream(sourceFile);
-			FileOutputStream outputFileStream = new FileOutputStream(
-					destinationFile);
+			FileInputStream inputStream = new FileInputStream(sourceFile);
+			FileOutputStream outputStream = new FileOutputStream(destinationFile);
+			BufferedInputStream inputFileStream = new BufferedInputStream(inputStream);
+			BufferedOutputStream outputFileStream = new BufferedOutputStream(outputStream);
 			// would really prefer this not to be a loop
 			// but to read and write the whole thing as a batch
 			for (int i = 0, currentCharacter = inputFileStream.read(); currentCharacter != -1; ++i, currentCharacter = inputFileStream.read()) {
@@ -59,9 +62,10 @@ public class FileEncoder61700 implements FileEncoderFN {
 		}
 
 		try {
-			FileInputStream inputFileStream = new FileInputStream(encodedFile);
-			FileOutputStream outputFileStream = new FileOutputStream(
-					destinationFile);
+			FileInputStream inputStream = new FileInputStream(encodedFile);
+			FileOutputStream outputStream = new FileOutputStream(destinationFile);
+			BufferedInputStream inputFileStream = new BufferedInputStream(inputStream);
+			BufferedOutputStream outputFileStream = new BufferedOutputStream(outputStream);
 			// would really prefer this not to be a loop
 			// but to read and write the whole thing as a batch
 			for (int i = 0, currentCharacter = inputFileStream.read(); currentCharacter != -1; ++i, currentCharacter = inputFileStream.read()) {
