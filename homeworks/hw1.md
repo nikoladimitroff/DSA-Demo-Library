@@ -37,7 +37,7 @@ public interface FileEncoderFN {
      * @param destinationFile - path to the result file
      * @param key - list of replacement bytes
      */
-    public void encode(String sourceFile, String destinationFile, LinkedList<Character> key);
+    public void encode(String sourceFile, String destinationFile, LinkedList<Byte> key);
     
     /**
      * Decodes a file that was encoded with the above algorithm.
@@ -45,14 +45,14 @@ public interface FileEncoderFN {
      * @param destinationFile - path to the result file
      * @param key - list of replacement bytes that were used to encode the file
      */
-    public void decode(String encodedFile, String destinationFile, LinkedList<Character> key);
+    public void decode(String encodedFile, String destinationFile, LinkedList<Byte> key);
 }
 ```
 If your faculty number is *123456* then your class should be called `FileEncoder123456`.
 
 You are given a path to a file which has to be encoded.
 You are also given a path where to write the resulting file.
-Finally, you are given a list of 256 bytes, each different from the others.
+Finally, you are given a list of 128 bytes, each different from the others.
 Your task is to implement the encryption and decryption methods described above
 using the following algorithm:
 
@@ -68,13 +68,13 @@ Here's an example. Let's say you are given the following source file and key:
 
 **Source file**: 4 3 2 0 5...
 
-**Key**: 123 101 111 222 251 42...
+**Key**: 123 101 111 17 98 42...
 
 Then the output file should start like this:
 
-**Output**: 251 3 2 0 42 ...
+**Output**: 17 3 2 0 42 ...
 
-* i = 0 is not a prime, we replace it with the 4th element of the key (write 251 to the output).
+* i = 0 is not a prime, we replace it with the 4th element of the key (write 17 to the output).
 * i = 1 is a special case and fits in the prime number category, we leave it as is (write 3 to the output)
 * i = 2 is a prime, we leave it as is (write 2 to the output)
 * i = 3 is a prime, leave it as is (write 0 to the output)
