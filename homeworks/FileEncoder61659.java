@@ -8,7 +8,7 @@ public class FileEncoder61659 implements FileEncoder {
 
 	private final static int TYPE_ENCODE = 1;
 	private final static int TYPE_DECODE = 2;
-	
+
 	@Override
 	public void encode(String sourceFile, String destinationFile,
 			LinkedList<Character> key) {
@@ -20,9 +20,10 @@ public class FileEncoder61659 implements FileEncoder {
 			LinkedList<Character> key) {
 		perform(TYPE_DECODE, encodedFile, destinationFile, key);
 	}
-	
-	private void perform(int type, String src, String dest, LinkedList<Character> key) {
-		
+
+	private void perform(int type, String src, String dest,
+			LinkedList<Character> key) {
+
 		File source = new File(src);
 		File destination = new File(dest);
 		FileInputStream fis = null;
@@ -34,13 +35,12 @@ public class FileEncoder61659 implements FileEncoder {
 
 			int currentByte, i = 0;
 			while ((currentByte = fis.read()) != -1) {
-				
+
 				int write = currentByte;
 				if (i != 1 && !isPrime(i)) {
-					if(type == TYPE_ENCODE) {
+					if (type == TYPE_ENCODE) {
 						write = key.get(currentByte);
-					}
-					else if(type == TYPE_DECODE) {
+					} else if (type == TYPE_DECODE) {
 						write = key.indexOf((char) currentByte);
 					}
 				}
