@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class FileEncoder61659 implements FileEncoder {
@@ -28,6 +30,12 @@ public class FileEncoder61659 implements FileEncoder {
 		File destination = new File(dest);
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
+		ArrayList<Character> orderedKeys = new ArrayList<Character>(key);
+		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		
+		for(int i=0; i<key.size(); i++) {
+			map.put(key.get(i), i);
+		}
 
 		try {
 			fis = new FileInputStream(source);
@@ -39,9 +47,9 @@ public class FileEncoder61659 implements FileEncoder {
 				int write = currentByte;
 				if (i != 1 && !isPrime(i)) {
 					if (type == TYPE_ENCODE) {
-						write = key.get(currentByte);
+						write = orderedKeys.get(currentByte);
 					} else if (type == TYPE_DECODE) {
-						write = key.indexOf((char) currentByte);
+						write = map.get((char) currentByte);
 					}
 				}
 
