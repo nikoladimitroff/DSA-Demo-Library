@@ -29,3 +29,13 @@ the most of the situation by solving the famous
 he'll be using your program for some time, you are required to solve the problem
 using **both dynamic programming AND branch & bound**.
 
+### Implement a Red-black and an AVL tree
+Red-black and AVL trees are a form of self-balancing binary search trees.
+They are incredibly efficient and are widely used when implementing ordered
+dictionaries. Your job is to implement:
+* insertion
+* removal
+* searching
+* size
+
+for both trees (and of course, the self-balancing part).
