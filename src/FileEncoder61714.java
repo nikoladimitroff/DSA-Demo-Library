@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class FileEncoder61714 implements FileEncoderFN {
@@ -69,10 +70,13 @@ public class FileEncoder61714 implements FileEncoderFN {
     }
 
     public void decode(String encodedFile, String outFile, LinkedList<Character> key) {
+        HashMap<Character, Integer> hashKey = new HashMap<>();
+        for (int i = 0; i < key.size(); i++) {
+            hashKey.put(key.get(i), i);
+        }
         BufferedInputStream inputStream;
         BufferedOutputStream outputStream;
 
-        ArrayList<Character> newKey = new ArrayList<>(key);
         try {
             inputStream = new BufferedInputStream(new FileInputStream(encodedFile));
             outputStream = new BufferedOutputStream(new FileOutputStream(outFile));
@@ -80,11 +84,10 @@ public class FileEncoder61714 implements FileEncoderFN {
             int currentByte;
             int index = 0;
             while ((currentByte = inputStream.read()) > -1) {
-
                 if (this.isPrime(index)) {
                     outputStream.write(currentByte);
                 } else {
-                    outputStream.write(newKey.indexOf((char) currentByte));
+                    outputStream.write(hashKey.get((char) currentByte));
                 }
                 index++;
             }
@@ -96,4 +99,3 @@ public class FileEncoder61714 implements FileEncoderFN {
             System.err.println("Error occurred during decoding file");
         }
     }
-}
