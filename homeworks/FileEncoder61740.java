@@ -46,7 +46,7 @@ public class FileEncoder61740 implements FileEncoderFN {
 				if(isPrime(i) || i == 1) {
 					out.write(currentChar);
 				} else {
-					out.write(key.indexOf(currentChar));
+					out.write(key.indexOf((char)currentChar));
 				}
 				currentChar = in.read();
 				i++;
