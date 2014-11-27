@@ -4,9 +4,14 @@ package dsalibrary;
 public class TestingArea {
     
     public static void main(String[] args) {
-        HashMap hashmap = new HashMap();
-        hashmap.add("Nikola", 359898);
-        hashmap.remove("Nikola");
-        System.out.println(hashmap.get("Nikola"));
+        BinarySearchTree bst = new BinarySearchTree("Nikola", 1);
+        bst.add("Oto", 2);
+        bst.add("Pesho", 3);
+        bst.add("Mechka", 4);
+        
+        bst.printPreorder(0);
+        
+        System.out.println("***********");
+        System.out.println(bst.get("Mechka"));
     }   
 }
