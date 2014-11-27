@@ -14,24 +14,42 @@ public class FileEncoder61685 {
     	List<Character> keys = new ArrayList<Character>(key);
     	Path path = Paths.get(sourceFile);
     	try {
-			byte[] data = Files.readAllBytes(path);
-			for(int i = 0; i < data.length; i++) {
-				if(!isPrime(i)) {
-					int t = data[i] & 0xff;
-					data[i] = (byte) ((int)keys.get(t));
-				}
+		byte[] data = Files.readAllBytes(path);
+		for(int i = 0; i < data.length; i++) {
+			if(!isPrime(i)) {
+				int t = data[i] & 0xff;
+				data[i] = (byte) ((int)keys.get(t));
 			}
-			Files.write(Paths.get(destinationFile), data, StandardOpenOption.CREATE);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+		Files.write(Paths.get(destinationFile), data, StandardOpenOption.CREATE);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
     }
 
     public void decode(String encodedFile, String destinationFile, LinkedList<Character> key) {
-    	this.encode(encodedFile, destinationFile, key);
+    	List<Character> keys = new ArrayList<Character>(key);
+
+    	Path path = Paths.get(encodedFile);
+    	
+    	try {
+		byte[] data = Files.readAllBytes(path);
+
+		for(int i = 0; i < data.length; i++)
+		{
+			if(!isPrime(i))
+			{
+				int t = data[i] & 0xff;
+				data[i] = (byte) ((int)keys.indexOf((char) t));
+			}
+		}
+		
+		Files.write(Paths.get(destinationFile), data, StandardOpenOption.CREATE);
+    	} catch (IOException e) {
+		e.printStackTrace();
+	}
     }
     
-    //First Version
     private boolean isPrime(int number) {
     	if (number == 0) return false;
         int sqrt = (int) Math.sqrt(number) + 1;
