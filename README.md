@@ -15,6 +15,7 @@ the basic operations on several data structures.
 | Stack | `O(1)`  | `O(1)` | `-` | `O(1)` | `-` | False |
 | Queue | `O(1)`  | `O(1)` | `-` | `O(1)` | `-` | False |
 | HashMap | `O(1)`  | `O(1)`<sub>A</sub> | `O(1)`<sub>A</sub> | `O(1)` | `O(1)` | False |
+| BST | `O(log n)`  | `O(log n)` | `O(log n)` | `O(log n)` | `O(log n)` | True |
 
 * Subscript <sub>A</sub> means that the complexity is amortized.
 
@@ -23,10 +24,12 @@ The following table summarizes the standard implementations (if any) of several 
 data structures in the most popular programming languages' standard libraries.
 
 
-| Language  | SequentialList | LinkedList | Stack | Queue  | HashMap | Set |
-|-----------------|:---:|:------:|:------:|:---------:|:------:|:------:|
-| C++ | `vector `  | `list` | `stack` | `queue` | `unordered_map` | `unordered_set` |
-| Java | `ArrayList`  | `LinkedList` | `Stack` | `Queue` | `HashMap` | `HashSet` |
-| C# | `List`  | `LinkedList` | `Stack` | `Queue` | `Dictionary` | `HashSet` |
-| Python | `list`  | `-` | `-` | `-` | `dict` | `set` |
-| JavaScript | `Array`  | `-` | `Array` | `Array` | `Object` | `-` |
+| Language  | SequentialList | LinkedList | Stack | Queue  | HashMap | Set | BST | Sorting algorithm
+|-----------------|:---:|:------:|:------:|:---------:|:------:|:------:|:------:|:------:|
+| C++ | `vector `  | `list` | `stack` | `queue` | `unordered_map` | `unordered_set` | `map` | `introsort` |
+| Java | `ArrayList`  | `LinkedList` | `Stack` | `Queue` | `HashMap` | `HashSet` | `-` | `timsort` |
+| C# | `List`  | `LinkedList` | `Stack` | `Queue` | `Dictionary` | `HashSet` | `SortedDictionary` | `introsort`
+| Python | `list`  | `-` | `-` | `-` | `dict` | `set` | `OrderedDict` | `timsort` |
+| JavaScript | `Array`  | `-` | `Array` | `Array` | `Object` | `-` | `-` | `NDS` |
+
+* NDS - Not Described in Standard (i.e. the language has multiple implementations that use different algorithms)
