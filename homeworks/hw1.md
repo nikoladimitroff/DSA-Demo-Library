@@ -98,13 +98,13 @@ Your marks will be assigned using this sample code:
 
 ```java
 int grade = 2;
-if (performance > 0.85)
+if (performance > 0.7)
     grade = 6;
-else if (performance > 0.7)
-    grade = 5;
-else if (performance > 0.6)
-    grade = 4;
 else if (performance > 0.5)
+    grade = 5;
+else if (performance > 0.3)
+    grade = 4;
+else if (performance > 0.1)
     grade = 3;
 ```
 
