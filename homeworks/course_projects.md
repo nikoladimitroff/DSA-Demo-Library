@@ -39,3 +39,11 @@ dictionaries. Your job is to implement:
 * size
 
 for both trees (and of course, the self-balancing part).
+
+### We are up all night to get hacky
+[One-time padding (OTP)](http://en.wikipedia.org/wiki/One-time_pad) is a secure,
+but easy to break cryptographic algorithm if it is misused. You'll be given a
+several sentences encrypted with the same key. Your task is to decipher all of
+them and tell us the the secret message encrypted within them. (hint: consider
+XORing a random ASCII letter with a space (ASCII code 32))
+
