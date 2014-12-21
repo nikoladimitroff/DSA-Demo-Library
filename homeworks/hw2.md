@@ -1,9 +1,7 @@
 Homework 
 ==========
-# THIS IS A ONLY A DRAFT
-
 ## Homework information
-Due date: 23:59:59, 12th of January, 2015.
+Due date: 23:59:59, 11th of January, 2015.
 
 You are to submit a single **.zip** archive named **groupNumber.fn.hw2.zip**
 where **groupNumber** is your group and **fn** is your faculty number.
@@ -28,10 +26,10 @@ Most book have an index of keywords found within its text. For example:
 
 ![Random book index][book-index-img]
 
-Your task today will be to generate one. You are to implement the following interface.
+Your task today will be to generate one.
+You are to implement the following interface:
 
 ```java
-
 public interface IBookIndexer {
     /**
       * Builds the index of the specified book, containing the given keywords
@@ -39,12 +37,14 @@ public interface IBookIndexer {
       * @param bookFilePath - path to book file
       * @param keywords - an array of keywords
       * @param indexFilePath - path to the output index file
+      * @author Nikola Dimitroff
       */
     public void buildIndex(String bookFilePath, String[] keywords, String indexFilePath);
 }
 ```
 
-We expect you to implement the interface in a class named `BookIndexerFN` where FN is your faculty number (suprise!). Like this:
+We expect you to implement the interface in a class named `BookIndexerFN`
+where FN is your faculty number (suprise!). Like this:
 ```java
 public class BookIndexer66666 implements IBookIndexer {
     ...
@@ -66,17 +66,19 @@ Text of page m
 We expect your index file to look like this:
 ```
 INDEX
-keyword1, 1, 
-keyword2, 4, 6, 10
+keyword1, page1
+keyword2, page1, page2, page3
 ...
-keywordN, 150-152, 405-406
+keywordN, page1, page2-page3
 ```
 Rules:
-* The output file always starts with the string *"INDEX"*
+* The output file must always start with the string *"INDEX"*
 * The next **n** lines contain the locations of each of the **n** keywords, **sorted alphabetically**:
   - Each line must start with the keyword itself, followed by a comma and a space
-  - The indexes of the words follow. If a word is found several times, display them all separated by commas. If a word is found on **consequent** pages display the range of pages with a dash as in ***150-152*** instead of ***150, 151, 152***.
-  - The indexer is case-insenstive - consider *"Hello"* and *"hello"* are the same word
+  - The indexes of the words follow. If a word is found several times, display
+  them all separated by commas. If a word is found on **consequent** pages display
+  the range of pages with a dash as in ***150-152*** instead of ***150, 151, 152***.
+  - The indexer is case-insenstive - consider *"Hello"* and *"hello"* the same word
   - **No** trailing whitespace is allowed
   - **No** trailing line ending is allowed
 
@@ -106,6 +108,13 @@ lorem, 1, 3
 quisque, 2-3
 ```
 
+## Notes
+* There might be missing pages (page 10 might be followed by page 100)
+* Pages will be presented in order (if x > y then page x will appear after page y)
+* Keywords will never contain whitespace characters.
+* The book files will be <= 300KB long
+* The number of keywords will be <= 1000
+
 [book-index-img]: https://lh3.googleusercontent.com/q13SsDI-o1ezCleJPiNYE6_oNf5C3G7bsXTanu2gjQWCeK9v9NinYYlj5LckXxdECJrm9htGxzWEenqTMjnxfLWvVo9srP-UKvRZacfzCqzNEWL-F-U
 
 ## Grading scale
@@ -134,7 +143,3 @@ If any of your tests gives a wrong result, you'll get 0 points for it.
 
 If you cheat by copying your solution from a classmate or the internet, you'll get 0
 points for the **ALL** tests.
-
-## Notes
-* The book files will be <= 300KB long
-* The number of keywords will be <= 1000
