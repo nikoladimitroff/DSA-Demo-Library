@@ -1,4 +1,4 @@
-Homework 
+Homework 2
 ==========
 ## Homework information
 Due date: 23:59:59, 11th of January, 2015.
