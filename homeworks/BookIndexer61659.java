@@ -82,13 +82,15 @@ public class BookIndexer61659 implements IBookIndexer {
 			fos = new FileOutputStream(indexFilePath);
 			osw = new OutputStreamWriter(fos);
 
-			sb.append("INDEX\r\n");
+			sb.append("INDEX");
 			for (String keyword : mSortedKeywords) {
 				String original = mLowercaseToOriginalMap.get(keyword);
 				String formatted = formatResult(original, mHashMap.get(keyword));
-				sb.append(formatted + "\r\n");
+				if(formatted != null) {
+					sb.append("\r\n" + formatted);
+				}
 			}
-
+			
 			osw.write(sb.toString());
 
 		} catch (FileNotFoundException e) {
@@ -106,9 +108,11 @@ public class BookIndexer61659 implements IBookIndexer {
 
 	private String formatResult(String keyword, ArrayList<Integer> arrayList) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(keyword);
 
 		if (arrayList != null) {
+			
+			sb.append(keyword);
+			
 			int n = arrayList.size();
 			for (int i = 0; i < n; i++) {
 				int beg = i;
@@ -132,7 +136,7 @@ public class BookIndexer61659 implements IBookIndexer {
 			}
 		}
 
-		return sb.toString();
+		return (arrayList != null ? sb.toString() : null);
 	}
 
 	private void analyzeLine(int pageNumber, String line, String[] keywords) {
