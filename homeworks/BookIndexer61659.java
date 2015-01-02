@@ -11,153 +11,153 @@ import java.util.HashSet;
 
 public class BookIndexer61659 implements IBookIndexer {
 
-	private HashMap<String, ArrayList<Integer>> mHashMap = new HashMap<>();
-	private HashMap<String, HashSet<Integer>> mFastContainingCheckMap = new HashMap<>();
-	private HashSet<String> mLowercaseKeywordsSet = new HashSet<>();
-	private HashMap<String, String> mLowercaseToOriginalMap = new HashMap<>();
-	private ArrayList<String> mSortedKeywords = new ArrayList<>();
+    private HashMap<String, ArrayList<Integer>> mHashMap = new HashMap<>();
+    private HashMap<String, HashSet<Integer>> mFastContainingCheckMap = new HashMap<>();
+    private HashSet<String> mLowercaseKeywordsSet = new HashSet<>();
+    private HashMap<String, String> mLowercaseToOriginalMap = new HashMap<>();
+    private ArrayList<String> mSortedKeywords = new ArrayList<>();
 
-	@Override
-	public void buildIndex(String bookFilePath, String[] keywords,
-			String indexFilePath) {
+    @Override
+    public void buildIndex(String bookFilePath, String[] keywords,
+            String indexFilePath) {
 
-		for (String keyword : keywords) {
-			String lowercase = keyword.toLowerCase();
+        for (String keyword : keywords) {
+            String lowercase = keyword.toLowerCase();
 
-			mLowercaseKeywordsSet.add(lowercase);
-			mLowercaseToOriginalMap.put(lowercase, keyword);
-			mSortedKeywords.add(lowercase);
-		}
+            mLowercaseKeywordsSet.add(lowercase);
+            mLowercaseToOriginalMap.put(lowercase, keyword);
+            mSortedKeywords.add(lowercase);
+        }
 
-		Collections.sort(mSortedKeywords);
+        Collections.sort(mSortedKeywords);
 
-		BufferedReader br = null;
+        BufferedReader br = null;
 
-		try {
-			br = new BufferedReader(new FileReader(bookFilePath));
-			String line;
-			int pageNumber = -1;
+        try {
+            br = new BufferedReader(new FileReader(bookFilePath));
+            String line;
+            int pageNumber = -1;
 
-			while ((line = br.readLine()) != null) {
-				if (line.startsWith("=== Page ") && line.endsWith(" ===")) {
-					String substr = line.substring(9, line.length() - 4);
-					int n = -1;
-					try {
-						n = Integer.parseInt(substr);
-					} catch (NumberFormatException e) {
-					}
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("=== Page ") && line.endsWith(" ===")) {
+                    String substr = line.substring(9, line.length() - 4);
+                    int n = -1;
+                    try {
+                        n = Integer.parseInt(substr);
+                    } catch (NumberFormatException e) {
+                    }
 
-					if (n != -1) {
-						pageNumber = n;
-					} else {
-						analyzeLine(pageNumber, line, keywords);
-					}
-				} else if(line.length() > 0) {
-					analyzeLine(pageNumber, line, keywords);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+                    if (n != -1) {
+                        pageNumber = n;
+                    } else {
+                        analyzeLine(pageNumber, line, keywords);
+                    }
+                } else if (line.length() > 0) {
+                    analyzeLine(pageNumber, line, keywords);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-		writeToIndexFile(indexFilePath);
-	}
+        writeToIndexFile(indexFilePath);
+    }
 
-	public void writeToIndexFile(String indexFilePath) {
-		FileOutputStream fos = null;
-		OutputStreamWriter osw = null;
-		StringBuilder sb = new StringBuilder();
+    public void writeToIndexFile(String indexFilePath) {
+        FileOutputStream fos = null;
+        OutputStreamWriter osw = null;
+        StringBuilder sb = new StringBuilder();
 
-		try {
-			fos = new FileOutputStream(indexFilePath);
-			osw = new OutputStreamWriter(fos);
+        try {
+            fos = new FileOutputStream(indexFilePath);
+            osw = new OutputStreamWriter(fos);
 
-			sb.append("INDEX");
-			for (String keyword : mSortedKeywords) {
-				String original = mLowercaseToOriginalMap.get(keyword);
-				String formatted = formatResult(original, mHashMap.get(keyword));
-				if(formatted != null) {
-					sb.append("\r\n" + formatted);
-				}
-			}
-			
-			osw.write(sb.toString());
+            sb.append("INDEX");
+            for (String keyword : mSortedKeywords) {
+                String original = mLowercaseToOriginalMap.get(keyword);
+                String formatted = formatResult(original, mHashMap.get(keyword));
+                if (formatted != null) {
+                    sb.append("\r\n" + formatted);
+                }
+            }
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				osw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            osw.write(sb.toString());
 
-	private String formatResult(String keyword, ArrayList<Integer> arrayList) {
-		StringBuilder sb = new StringBuilder();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                osw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-		if (arrayList != null) {
-			
-			sb.append(keyword);
-			
-			int n = arrayList.size();
-			for (int i = 0; i < n; i++) {
-				int beg = i;
-				int end = i;
-				if (i < n - 1) {
-					while (arrayList.get(end + 1) - arrayList.get(end) == 1) {
-						end++;
-						if (end >= n - 1) {
-							break;
-						}
-					}
-				}
+    private String formatResult(String keyword, ArrayList<Integer> arrayList) {
+        StringBuilder sb = new StringBuilder();
 
-				if (beg == end) {
-					sb.append(", " + arrayList.get(i));
-				} else {
-					sb.append(", " + arrayList.get(beg) + "-"
-							+ arrayList.get(end));
-					i = end;
-				}
-			}
-		}
+        if (arrayList != null) {
 
-		return (arrayList != null ? sb.toString() : null);
-	}
+            sb.append(keyword);
 
-	private void analyzeLine(int pageNumber, String line, String[] keywords) {
-		String[] wordsInLine = line.split("[^a-zA-Z0-9-]+");
-		for (String word : wordsInLine) {
-			word = word.toLowerCase();
+            int n = arrayList.size();
+            for (int i = 0; i < n; i++) {
+                int beg = i;
+                int end = i;
+                if (i < n - 1) {
+                    while (arrayList.get(end + 1) - arrayList.get(end) == 1) {
+                        end++;
+                        if (end >= n - 1) {
+                            break;
+                        }
+                    }
+                }
 
-			if (mLowercaseKeywordsSet.contains(word)) {
-				ArrayList<Integer> pages = mHashMap.get(word);
-				HashSet<Integer> ints = mFastContainingCheckMap.get(word);
+                if (beg == end) {
+                    sb.append(", " + arrayList.get(i));
+                } else {
+                    sb.append(", " + arrayList.get(beg) + "-"
+                            + arrayList.get(end));
+                    i = end;
+                }
+            }
+        }
 
-				if (pages == null) {
-					pages = new ArrayList<Integer>();
-					ints = new HashSet<>();
-				}
+        return (arrayList != null ? sb.toString() : null);
+    }
 
-				if (!ints.contains(pageNumber)) {
-					pages.add(pageNumber);
-					ints.add(pageNumber);
-				}
+    private void analyzeLine(int pageNumber, String line, String[] keywords) {
+        String[] wordsInLine = line.split("[^a-zA-Z0-9-]+");
+        for (String word : wordsInLine) {
+            word = word.toLowerCase();
 
-				mHashMap.put(word, pages);
-				mFastContainingCheckMap.put(word, ints);
-			}
-		}
-	}
+            if (mLowercaseKeywordsSet.contains(word)) {
+                ArrayList<Integer> pages = mHashMap.get(word);
+                HashSet<Integer> ints = mFastContainingCheckMap.get(word);
+
+                if (pages == null) {
+                    pages = new ArrayList<Integer>();
+                    ints = new HashSet<>();
+                }
+
+                if (!ints.contains(pageNumber)) {
+                    pages.add(pageNumber);
+                    ints.add(pageNumber);
+                }
+
+                mHashMap.put(word, pages);
+                mFastContainingCheckMap.put(word, ints);
+            }
+        }
+    }
 
 }
