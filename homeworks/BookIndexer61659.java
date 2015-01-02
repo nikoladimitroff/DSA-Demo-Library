@@ -24,10 +24,6 @@ public class BookIndexer61659 implements IBookIndexer {
 		for (String keyword : keywords) {
 			String lowercase = keyword.toLowerCase();
 
-			if (lowercase.endsWith(".")) {
-				lowercase = lowercase.substring(0, lowercase.length() - 1);
-			}
-
 			mLowercaseKeywordsSet.add(lowercase);
 			mLowercaseToOriginalMap.put(lowercase, keyword);
 			mSortedKeywords.add(lowercase);
@@ -140,7 +136,7 @@ public class BookIndexer61659 implements IBookIndexer {
 	}
 
 	private void analyzeLine(int pageNumber, String line, String[] keywords) {
-		String[] wordsInLine = line.split("[\\W]+");
+		String[] wordsInLine = line.split("[^a-zA-Z0-9-]+");
 		for (String word : wordsInLine) {
 			word = word.toLowerCase();
 
