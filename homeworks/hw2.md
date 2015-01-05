@@ -7,7 +7,7 @@ You are to submit a single **.zip** archive named **groupNumber.fn.hw2.zip**
 where **groupNumber** is your group and **fn** is your faculty number.
 Upload the archive to moodle.
 
-This is ok: ***group1.66666.hw1.zip***
+This is ok: ***group1.66666.hw2.zip***
 
 This is not: ***domashno2.rar***
 
@@ -92,7 +92,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus non odio sed
 === Page 2 ===
 Aenean porta velit et ex fermentum, vitae finibus diam elementum. Vivamus dapibus purus dolor, quis ultricies orci ornare eu. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed purus rhoncus, dignissim nunc non, laoreet tortor. 
 
-== Page 3 ==
+== Page 3 ===
 Integer blandit sem nulla, in pretium augue finibus quis. Ut elementum augue vel dignissim accumsan. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec blandit libero.
 ```
 Keywords:
