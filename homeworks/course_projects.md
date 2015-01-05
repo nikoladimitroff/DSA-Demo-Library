@@ -1,6 +1,18 @@
 Final course projects
-THIS IS A DRAFT
 ======================
+Choose one of the projects below and fill this [form](http://goo.gl/forms/qrVNhLJ42I)
+BEFORE 11.01.2015, 23:59:59. If you fail to do so, you'll be assigned a project
+at random.
+
+All of the problems are *hard*. They require some research but because of
+that you've got plenty of time. Feel free to ask us about hints.
+
+* Your grade depends on 3 components - functionality, performance & code quality
+* You are **not** required to write in Java.
+* If none of the projects below fit you, you may suggest another one.
+* Your grade will be finalized after a successful defence during the last exerice or 2
+(your teaching assistant will give you more information)
+
 
 ### Mini-mathematica
 Write a program that properly computes mathematical expressions over the following
@@ -85,3 +97,20 @@ output -> false
 
 Feel free to contact me (Nikola Dimitroff) in case you need extra guidance, resources
 or other info on this task.
+
+### Maximum flow
+Implement [Ford-Fulkerson's algorithm](http://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm)
+which computes the maximum flow of a given graph. Design tests / demo.
+
+### JPEG
+Implement the compression algorithm used in JPEG (which is a Fast Fourier Transform).
+Your program should be able to display the colours of pixels in any given JPEG
+image. You **don't need to draw the actual colours**, it is enough to show their
+values as a text - for instance by
+displaying a two-dimensional array with the RGBA values of each pixel.
+
+Your program should also be able to further compress a JPEG image using a greater
+level of compression.
+Some resources:
+http://www.programirane.org/ - Page 674
+http://www.ctralie.com/PrincetonUGRAD/Projects/JPEG/jpeg.pdf
