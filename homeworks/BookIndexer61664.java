@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class BookIndexer61664 {
+public class BookIndexer61664 implements IBookIndexer {
     private WordTree wordTree;
 
     public void buildIndex(String bookFilePath, String[] keywords, String indexFilePath) {
