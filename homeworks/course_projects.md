@@ -59,8 +59,8 @@ for both trees (and of course, the self-balancing part).
 [One-time padding (OTP)](http://en.wikipedia.org/wiki/One-time_pad) is a secure,
 but easy to break cryptographic algorithm if it is misused. All it does is given
 a input message `m` and a key `k` is to XOR them to produce the encrypted message
-`e` (`e = m ^ k`). Due to properties of XOR, decrypting the message is done simplyYou
-with `m = e ^ k`. Unfortunately, if the same key is used to encrypted more than
+`e` (`e = m ^ k`). Due to properties of XOR, decrypting is simply `m = e ^ k`.
+Unfortunately, if the same key is used to encrypted more than
 one sentence there's a relatively easy to way to get back the key and decrypt them
 all. Your task is precisely that.
 
@@ -103,14 +103,8 @@ Implement [Ford-Fulkerson's algorithm](http://en.wikipedia.org/wiki/Ford%E2%80%9
 which computes the maximum flow of a given graph. Design tests / demo.
 
 ### JPEG
-Implement the compression algorithm used in JPEG (which is a Fast Fourier Transform).
+Implement the compression algorithm used in JPEG.
 Your program should be able to display the colours of pixels in any given JPEG
 image. You **don't need to draw the actual colours**, it is enough to show their
 values as a text - for instance by
 displaying a two-dimensional array with the RGBA values of each pixel.
-
-Your program should also be able to further compress a JPEG image using a greater
-level of compression.
-Some resources:
-http://www.programirane.org/ - Page 674
-http://www.ctralie.com/PrincetonUGRAD/Projects/JPEG/jpeg.pdf
