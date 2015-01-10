@@ -103,7 +103,6 @@ Implement [Ford-Fulkerson's algorithm](http://en.wikipedia.org/wiki/Ford%E2%80%9
 which computes the maximum flow of a given graph. Design tests / demo.
 
 ### JPEG
-Implement the compression algorithm used in JPEG.
 Your program should be able to display the colours of pixels in any given JPEG
 image. You **don't need to draw the actual colours**, it is enough to show their
 values as a text - for instance by
