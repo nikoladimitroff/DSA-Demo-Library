@@ -4,13 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
 public class BookIndexer61700 implements IBookIndexer {
 	private final String PageLineStart = "=== Page ";
@@ -19,25 +18,22 @@ public class BookIndexer61700 implements IBookIndexer {
 	private final int PageLineEndLength = this.PageLineEnd.length();
 
 	private HashMap<String, TreeSet<Integer>> keywordsPagesMapWithLowerCaseKeys = new HashMap<String, TreeSet<Integer>>();
-	private HashMap<String, Pattern> keywordsPatternsMap = new HashMap<String, Pattern>();
 	private Set<String> keywordsToLowerCase = new HashSet<String>();
-	private SortedSet<String> sortedKeywords = new TreeSet<String>();
-
+	
 	@Override
 	public void buildIndex(String bookFilePath, String[] keywords,
 			String indexFilePath) {
 		String wordToLowerCase = null;
 		for (String word : keywords) {
-			this.sortedKeywords.add(word);
 			wordToLowerCase = word.toLowerCase();
 			this.keywordsPagesMapWithLowerCaseKeys.put(wordToLowerCase,
 					new TreeSet<Integer>());
-			this.keywordsPatternsMap.put(wordToLowerCase,
-					Pattern.compile(".*\\b" + wordToLowerCase + "\\b.*"));
 			this.keywordsToLowerCase = this.keywordsPagesMapWithLowerCaseKeys
 					.keySet();
 		}
-
+		
+		Arrays.sort(keywords);
+		
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(bookFilePath));
@@ -89,8 +85,7 @@ public class BookIndexer61700 implements IBookIndexer {
 			// Save data to file
 			StringBuilder result = new StringBuilder();
 			result.append("INDEX");
-			for (String word : this.sortedKeywords) {
-
+			for (String word : keywords) {
 				Iterator<Integer> iterator = this.keywordsPagesMapWithLowerCaseKeys
 						.get(word.toLowerCase()).iterator();
 				Boolean hasNext = false;
