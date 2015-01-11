@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 
+
 public class FileEncoder61685 {
 	
     public void encode(String sourceFile, String destinationFile, LinkedList<Character> key) {
