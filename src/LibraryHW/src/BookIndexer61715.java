@@ -21,7 +21,7 @@ public class BookIndexer61715 implements IBookIndexer {
 		List<Keyword> kwords = new ArrayList<Keyword>();
 		TreeSet<String> treeSet = new TreeSet<String>();		
 		for(String word: keywords){
-			treeSet.add(word);
+			treeSet.add(word.toLowerCase());
 		}
 		
 		for(String word: treeSet){
@@ -33,12 +33,8 @@ public class BookIndexer61715 implements IBookIndexer {
 	
 	@Override
 	public void buildIndex(String bookFilePath, String[] keywords,
-			String indexFilePath) {
-		
-		List<Keyword> kwords = formatKeyWords(keywords);
-		
-		StringBuilder textToString = new StringBuilder();
-		
+			String indexFilePath) {		
+		List<Keyword> kwords = formatKeyWords(keywords);		
 		String content = null;
 		try {
 			content = readFile(bookFilePath, StandardCharsets.UTF_8);
@@ -49,23 +45,29 @@ public class BookIndexer61715 implements IBookIndexer {
 		
 		List<Integer> pageNumbers = new ArrayList<Integer>();
 		for(int i = 0; i < con.length; i++){
-			textToString.append(con[i]).append(" ");
 			
 			if(con[i].trim().matches("=== Page \\d+ ===")){
 				int number = Integer.parseInt(con[i].split(" ")[2]);
 				pageNumbers.add(number);
 			}
 		}
-		String[] pages = textToString.toString().split("=== Page \\d+ ===");
+		String[] pages = content.split("=== Page \\d+ ===");
 		
 		for(int i = 0; i < pageNumbers.size(); i++){
 			String pageText = pages[i + 1].toString().toLowerCase();
-			int pageNumber = pageNumbers.get(i);
-			
+			int pageNumber = pageNumbers.get(i);			
+			String[] strings = pageText.split("[^A-Za-z0-9-]");				
 			for(Keyword word: kwords){
-				if(pageText.matches(".*?\\b" + word.content + "\\b.*?")){
-					word.pages.add(pageNumber);
+				for(String string: strings){
+					if(word.content.equals(string)){
+						word.pages.add(pageNumber);
+					}
 				}
+				
+				//if(pageText.matches(".*?\\b" + word.content + "\\b.*?")){
+//					if(pageText.matches(".*?[^A-Za-z0-9-]" + word.content + "[^A-Za-z0-9-].*?")){
+//					word.pages.add(pageNumber);
+//				}
 			}
 		}
 		
@@ -93,7 +95,7 @@ public class BookIndexer61715 implements IBookIndexer {
 		public List<Integer> pages;
 		public String content;
 		public Keyword(String word){
-			this.content = word.toLowerCase();
+			this.content = word;
 			this.pages = new ArrayList<Integer>();
 		}
 
