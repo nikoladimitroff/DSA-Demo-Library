@@ -17,7 +17,7 @@ import java.util.LinkedList;
  *
  */
 
-public class FileEncoder123456 implements FileEncoderFN {
+public class FileEncoder61761 implements FileEncoderFN {
 
 	@Override
 	public void encode(String sourceFilePath, String destinationFilePath,
