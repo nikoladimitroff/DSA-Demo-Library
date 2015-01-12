@@ -1,0 +1,153 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class BookIndexer61670 implements IBookIndexer {
+
+	private class Node {
+		String word;
+		ArrayList<Integer> pageOccurances;
+
+		public Node(String word, ArrayList<Integer> pages) {
+			super();
+			this.word = word;
+			this.pageOccurances = pages;
+		}
+	}
+
+	private ArrayList<Node> indexList;
+	private BufferedReader reader;
+	private static int currentPageNumber;
+	private ArrayList<String> sortedKeywordsList;
+
+	@Override
+	public void buildIndex(String bookFilePath, String[] keywords,
+			String indexFilePath) {
+		indexList = new ArrayList<Node>();
+		sortedKeywordsList = new ArrayList<String>(Arrays.asList(keywords));
+		Collections.sort(sortedKeywordsList, String.CASE_INSENSITIVE_ORDER);
+		for (String keyword : sortedKeywordsList) {
+			ArrayList<Integer> arrayList = new ArrayList<Integer>();
+			indexList.add(new Node(keyword.toLowerCase(), arrayList));
+		}
+
+		try {
+			reader = new BufferedReader(new FileReader(bookFilePath));
+			String line;
+			while (((line = reader.readLine()) != null)) {
+				Pattern pattern = Pattern.compile("^=== Page \\d+ ===$");
+				Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					currentPageNumber = Integer.valueOf(line.substring(
+							matcher.start() + 9, matcher.group().length() - 4));
+				} else if (!line.isEmpty()) {
+					searchInLine(currentPageNumber, line);
+				}
+			}
+			writeToOutputFile(indexFilePath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void searchInLine(int pageNumber, String line) {
+		line = line.toLowerCase();
+		String[] wordsInLine = line.split("[\\W]+");
+		Arrays.sort(wordsInLine);
+		int fromIndex = 0;
+
+		for (Node node : indexList) {
+			String word = node.word;
+			int n = wordsInLine.length;
+			int i = Arrays.binarySearch(wordsInLine, fromIndex, n, word);
+			if (i >= 0) {
+				while (wordsInLine[i].equals(wordsInLine[i + 1]) && i < n - 2) {
+					i++;
+				}
+				ArrayList<Integer> pages = node.pageOccurances;
+				fromIndex = i;
+				if (!pages.contains(pageNumber)) {
+					pages.add(pageNumber);
+					node.pageOccurances = pages;
+				}
+			}
+		}
+	}
+
+	private void writeToOutputFile(String filePath) {
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter(filePath));
+			writer.write(getOutputString());
+
+		} catch (IOException e) {
+		} finally {
+			try {
+				if (writer != null)
+					writer.close();
+			} catch (IOException e) {
+			}
+		}
+	}
+
+	private String getOutputString() {
+		String output = "INDEX\r\n";
+		for (Node node : indexList) {
+			String line = formatWordOccurances(node);
+			if (line != null) {
+				output = output + line + "\r\n";
+			}
+		}
+		return output.trim();
+	}
+
+	private String formatWordOccurances(Node node) {
+		String output = "";
+		int start;
+		int end;
+		ArrayList<Integer> occurances = node.pageOccurances;
+		String word = node.word;
+		if (!occurances.isEmpty()) {
+			output += word;
+			int n = occurances.size();
+			for (int i = 0; i < n; i++) {
+				start = i;
+				end = i;
+				if (i < n - 1) {
+					if (i < n - 1) {
+						while (occurances.get(end + 1) - occurances.get(end) == 1) {
+							end++;
+							if (end >= n - 1) {
+								break;
+							}
+						}
+					}
+				}
+				if (start == end) {
+					output += ", " + occurances.get(i);
+				} else {
+					output += ", " + occurances.get(start) + "-"
+							+ occurances.get(end);
+					i = end;
+				}
+			}
+
+			return output;
+		} else {
+			return null;
+		}
+	}
+}
