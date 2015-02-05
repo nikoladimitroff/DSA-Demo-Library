@@ -3,6 +3,7 @@
 Събота, 7ми февруари, между 10 и 19 часа, 321 стая.
 
 За разпределението по часове - вижте тук - втория spreadsheet (Schedule):
+[https://onedrive.live.com/redir?resid=1B499CD3979C77ED!10506&authkey=!AEBtXfY33b9AO1o&ithint=file%2cxlsx](https://onedrive.live.com/redir?resid=1B499CD3979C77ED!10506&authkey=!AEBtXfY33b9AO1o&ithint=file%2cxlsx)
 
 Ако някой няма да идва ще се радвам да ми каже, за да го махна от програмата и да
 свършим по-бързо. Ако часа не ви е удобен, разменете се с някого, не е необходимо
