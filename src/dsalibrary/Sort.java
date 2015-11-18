@@ -9,14 +9,13 @@ package dsalibrary;
  *
  * @author Nikola
  */
+
 public class Sort {
     
     public static int min(int array[], int start, int end) {
-        int min = array[start];
         int minIndex = start;
-        for (int i = start + 1; i < end; i++) {
-            if (array[i] < min) {
-                min = array[i];  
+        for (int i = start; i < end; i++) {
+            if (array[i] < array[minIndex]) {
                 minIndex = i;
             }
         }
@@ -48,14 +47,16 @@ public class Sort {
     }
     
     public static void insertionSort(int[] array, int start, int end) {
-        for (int i = start; i < end - 1; i++) {
-            int j = i + 1;
-            while (j > start && array[j] < array[j - 1]) {
-                int temp = array[j];
+        for (int i = start + 1; i < end; i++) {
+            int elementToSwap = array[i];
+            int j = i;
+            // Go from i to start to save some cache lines
+            while (j > start && array[j - 1] > elementToSwap) {
                 array[j] = array[j - 1];
-                array[j - 1] = temp;
                 j--;                
             }
+            
+            array[j] = elementToSwap;
         }
     }
     
@@ -71,71 +72,56 @@ public class Sort {
         }
         int temp = array[pivot];
         array[pivot] = array[storage];
+        array[storage] = temp;
+
+        return storage;
+    }
+    
+    public static void quickSort(int[] array, int start, int end) {
+        if (end - start <= 1)
+            return;
+
+        int pivot = partition(array, start, end);
+        quickSort(array, start, pivot);
+        quickSort(array, pivot + 1, end);
+    }
+    
+    // Quick sort will fallback to insertion
+    public static void quickSortWithInsertion(int[] array, int start, int end) {
+        if (end - start <= 20) { // This constant is somewhat arbitrary
+            insertionSort(array, start, end);
+            return;
+        }
+
+        int pivot = partition(array, start, end);
+        quickSort(array, start, pivot);
+        quickSort(array, pivot + 1, end);
+    }
+    
+    // Quick sort with custom comparator
+    private static <T> int partition(T[] array, int start, int end, IComparator<T> comparator) {
+        int pivot = end - 1;
+        int storage = start;
+        for (int i = start; i < end; i++) {
+            if (comparator.isLessThan(array[i], array[pivot])) {
+                T temp = array[i];
+                array[i] = array[storage];
+                array[storage++] = temp;
+            }
+        }
+        T temp = array[pivot];
+        array[pivot] = array[storage];
         array[storage++] = temp;
 
         return pivot;
     }
     
-    public static void quicksort(int[] array, int start, int end) {
+    public static <T> void quickSort(T[] array, int start, int end, IComparator<T> comparator) {
         if (end - start <= 1)
             return;
 
-        int pivot = partition(array, start, end);
-        quicksort(array, start, pivot);
-        quicksort(array, pivot, end);
+        int pivot = partition(array, start, end, comparator);
+        quickSort(array, start, pivot, comparator);
+        quickSort(array, pivot, end, comparator);
     }
-    
-    /*
-    
-    
-        System.out.print("PARTITION: ");
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]);
-            System.out.print(' ');
-        }
-        System.out.println();
-    
-    
-    
-    */
-    
-    
-    public static int[] mergesort(int[] array) {
-        if (array.length <= 1)
-            return array;
-        
-        int mid = array.length / 2;
-        int[] leftHalf = mergesort(copy(array, 0, mid));
-        int[] rightHalf = mergesort(copy(array, mid, array.length));
-        int[] result = new int[array.length];
-        int leftIndex = 0,
-            rightIndex = 0;
-        int storeIndex = 0;
-        while (leftIndex < leftHalf.length || rightIndex < rightHalf.length) {
-            if (leftIndex < leftHalf.length && 
-                rightIndex >= rightHalf.length) {
-                result[storeIndex++] = leftHalf[leftIndex++];
-            }
-            else if (rightIndex < rightHalf.length && 
-                leftIndex >= leftHalf.length) {
-                result[storeIndex++] = rightHalf[rightIndex++];
-            }
-            else if (leftHalf[leftIndex] < rightHalf[rightIndex]) {
-                result[storeIndex++] = leftHalf[leftIndex++];
-            }
-            else {
-                result[storeIndex++] = rightHalf[rightIndex++];
-            }
-        }
-        return result;
-    }
-    
-    public static int[] copy(int[] array, int start, int end) {
-        int[] copy = new int[end - start];
-        for (int i = 0; i < copy.length; i++) {
-            copy[i] = array[i + start];
-        }
-        return copy;
-    }
-    
 }       

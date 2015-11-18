@@ -3,6 +3,10 @@ DSA-Demo-Library
 A library that contains basic data structures and algorithm implementations in Java for the 
 purposes of the Data Structure + Algorithms course @ FMI, SU.
 
+## Cheatsheet
+Quick summary of everything studied in the course + extra algorithms
+can be found here - [http://bigocheatsheet.com/](http://bigocheatsheet.com/)
+
 ## Data structure comparison
 The following table summarizes what we already know about the algorithmic complexity of 
 the basic operations on several data structures.

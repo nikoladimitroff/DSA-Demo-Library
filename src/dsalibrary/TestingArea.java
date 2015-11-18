@@ -1,27 +1,77 @@
 package dsalibrary;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 
 public class TestingArea {
+    private static final boolean ENABLE_DEBUG_PRINTING = true;
+
+    private static void printArrayInline(int[] array, int start, int end) {
+        if (!ENABLE_DEBUG_PRINTING) {
+            return;
+        }
+        for (int i = start; i < end; i++) {
+            System.out.print(array[i] + ", ");
+        }
+        System.out.println();
+    }
+    private static int[] getInverselySortedArray(int size) {
+        int[] array = new int[size];
+        for (int i = 0; i < size; i++) {
+            array[i] = size - i;
+        }
+        return array;
+    }
     
-    public static void main(String[] args) {
-        /*
-        String infile = "F:\\Developer\\dsa-demo-library\\input.bin";
-        String encodedFile = "F:\\Developer\\dsa-demo-library\\encoded.bin";
-        String decodedFile = "F:\\Developer\\dsa-demo-library\\decoded.bin";
+    private static double measureWorstCase(int size) {
+        int[] data = getInverselySortedArray(size);
+        printArrayInline(data, 0, size);
+
+        double now = System.currentTimeMillis();
+        Sort.bubbleSort(data, 0, size);
+        double duration = System.currentTimeMillis() - now;
+
+        printArrayInline(data, 0, size);
+        return duration;
+    }
+    
+    private static int[] loadData(String path, int expectedSize) throws FileNotFoundException {
+        Scanner s = new Scanner(new File(path));
+        int[] array = new int[expectedSize];
+
+        for (int i = 0; i < expectedSize; i++) {
+            array[i] = s.nextInt();
+        }
+        s.close();
+        return array;
+    }
+    
+    private static double measureAverageCase(int[] array, int size) {
+        int[] dataCopy = array.clone();
+        printArrayInline(dataCopy, 0, size);
+
+        double now = System.currentTimeMillis();
+        Sort.bubbleSort(dataCopy, 0, size);
+        double duration = System.currentTimeMillis() - now;
+
+        printArrayInline(dataCopy, 0, size);
+        return duration;
+    }
+    
+    public static void main(String[] args) throws FileNotFoundException {
+        int[] array = new int[] { 4, 2, 5, 3, 10, -5, 7, -10, 0, 9 };
+        Sort.selectionSort(array, 0, array.length);
+        printArrayInline(array, 0, array.length);
+
+        int maxSize = 100000;
+        int minSize = 10000;
+        int step = 5000;
         
-        OTPEncrypter encrypter = new OTPEncrypter();
-        char[] key = new char[]{123, 245, 254, 99};
-        encrypter.encrypt(infile, encodedFile, key);
-        encrypter.decrypt(encodedFile, decodedFile, key);
-        */
-        
-        AuthorBookIndexer indexer = new AuthorBookIndexer();
-        String book = "F:\\\\Developer\\\\dsa-demo-library\\\\book.txt";
-        //String[] keywords = new String[] { "chapter", "sea", "Ishmael", "whale", "see", "1839", "God"};
-        //String[] keywords = new String[] { "2003", "Justin", "Spears", "cry", "award", "21", "FeBrUaRy"};
-        //String[] keywords = new String[] { "IS", "THIS", "NOTHING", "BOY", "GALILEO", "OOH", "THE", "JUST", "BISMILLAH"};
-        //String[] keywords = new String[] { "American", "beard", "vegan", "iphone", "YOLO", "kickstarter", "90", "hashtag", "bag", "8-bit", "food", "street", "mixtape", "helvetica", "photo", "wolf", "next", "cold-pressed", "post-ironic", "coffee", "mumblecore", "quinoa", "salvia", "pop-up", "try-hard", "moon", "polaroid", "craft", "tofu", "messenger", "bird", "selfies", "gluten-free", "ugh", "street", "pinterest", "leggings", "cleanse", "actually", "art", "blog", "readymade", "health", "wayfarers", "jean", "shorts", "lumbersexual", "tumblr", "retro", "single-origin", "artisan", "hoodie", "ethical", "freegan", "biodiesel", "letterpress", "mustache", "fashion", "banksy", "3"};
-        String[] keywords = new String[] { "1948", "turing", "alan", "june", "test", "january", "1952", "professor", "prosecuted", "20", "19-year-old", "computer", "code", "cipher", "second", "world", "war", "mathematics", "science", "german", "39", "defence", "accused", "espionage", "death", "september", "breaking", "Church", "cambridge", "Entscheidungsproblem", "Christopher", "Morcom"};
-        indexer.buildIndex(book, keywords, "INDEX.txt");
+        int[] averageCaseData = loadData("random_numbers.txt", maxSize);
+        for (int size = minSize; size <= maxSize; size += step) {
+            System.out.println(measureAverageCase(averageCaseData, size));
+        }
     }   
 }
