@@ -67,7 +67,8 @@ public class Sort {
             if (array[i] < array[pivot]) {
                 int temp = array[i];
                 array[i] = array[storage];
-                array[storage++] = temp;
+                array[storage] = temp;
+                storage++;
             }
         }
         int temp = array[pivot];
@@ -111,9 +112,9 @@ public class Sort {
         }
         T temp = array[pivot];
         array[pivot] = array[storage];
-        array[storage++] = temp;
+        array[storage] = temp;
 
-        return pivot;
+        return storage;
     }
     
     public static <T> void quickSort(T[] array, int start, int end, IComparator<T> comparator) {

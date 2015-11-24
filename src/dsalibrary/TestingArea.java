@@ -4,6 +4,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+class StringComparator implements IComparator<String> {
+    @Override
+    public boolean isLessThan(String x, String y) {
+        if (x.length() != y.length()) {
+            return x.length() < y.length();
+        }
+        for (int i = 0; i < x.length(); i++) {
+            if (x.charAt(i) != y.charAt(i)) {
+                return x.charAt(i) < y.charAt(i);
+            }
+        }
+        return false;
+    }
+}
+
 
 public class TestingArea {
     private static final boolean ENABLE_DEBUG_PRINTING = true;
@@ -60,10 +75,33 @@ public class TestingArea {
         return duration;
     }
     
+    private static int binarySearch(int array[], int element, int start, int end) {
+        if (end - start == 0) {
+            return -1;
+        }
+        int mid = (start + end) / 2;
+        if (array[mid] < element) {
+            return binarySearch(array, element, mid + 1, end);
+        }
+        else if (array[mid] > element) {
+            return binarySearch(array, element, start, mid);
+        }
+        else {
+            return mid;
+        }
+    }
+    
     public static void main(String[] args) throws FileNotFoundException {
+        //String[] stringArray = new String[] { "XYA", "ASD", "YXZ", "DSA", "XYZ" };
+        //Sort.quickSort(stringArray, 0, stringArray.length, new StringComparator());
+        //for (String s : stringArray) {
+        //     System.out.println(s);
+        //}
+
         int[] array = new int[] { 4, 2, 5, 3, 10, -5, 7, -10, 0, 9 };
         Sort.selectionSort(array, 0, array.length);
         printArrayInline(array, 0, array.length);
+        System.out.println(binarySearch(array, 10, 0, array.length));
 
         int maxSize = 100000;
         int minSize = 10000;
@@ -71,7 +109,7 @@ public class TestingArea {
         
         int[] averageCaseData = loadData("random_numbers.txt", maxSize);
         for (int size = minSize; size <= maxSize; size += step) {
-            System.out.println(measureAverageCase(averageCaseData, size));
+        //    System.out.println(measureAverageCase(averageCaseData, size));
         }
     }   
 }
