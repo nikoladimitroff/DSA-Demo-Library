@@ -8,114 +8,112 @@ package dsalibrary;
  *
  * @author Nikola
  */
+
 class Entry {
+    public Entry next;
     public String key;
     public int value;
-    
-    public Entry next;
     
     public Entry(String key, int value) {
         this.key = key;
         this.value = value;
+        this.next = null;
     }
 }
 
 public class HashMap {
     private Entry[] table;
-    private static final int INITIAL_SIZE = 2;
-    private static final int GROW_MULTIPLIER = 2;
-    private static final float MAX_LOAD_FACTOR = 0.75f;
+    private int elementCount;
     
-    private int entryCount;
+    private static final int INITIAL_SIZE = 16;
+    private static final double SIZE_MULTIPLIER = 2;
+    private static final double MAX_WORKLOAD = 0.75;
     
-    public HashMap() {
+    HashMap() {
+        this.elementCount = 0;
         this.table = new Entry[INITIAL_SIZE];
-        this.entryCount = 0;
     }
     
-    private HashMap(int size) {
-        this.table = new Entry[size];
-        this.entryCount = 0;        
-    }
-
-    private int trivialHash(String content) {
-        int hash = 23;
-        for (int i = 0; i < content.length(); i++) {
-            hash *= content.charAt(i) + 31;
+    private int hash(String key) {
+        int p1 = 23;
+        int p2 = 31;
+        int result = p1;
+        for (int i = 0; i < key.length(); i++) {
+            result += p1 * key.charAt(i) + p2;
         }
-        return hash;
+        result += p1 * key.length() + p2;
+        return result;
     }
     
-    private int indexer(String key) {
-        int hash = this.trivialHash(key);
-        return Math.abs(hash % this.table.length);
+    private int index(String key, int size) {
+        return Math.abs(this.hash(key)) % size;
+    }
+    
+    private void tryGrow() {
+        double workload = this.elementCount / this.table.length;
+        
+        if (workload >= MAX_WORKLOAD) {
+            int newSize = (int)(this.table.length * SIZE_MULTIPLIER);
+            Entry[] newTable = new Entry[newSize];
+            for (int i = 0; i < this.table.length; i++) {
+                Entry current = this.table[i];
+                while (current != null) {
+                    int position = this.index(current.key, newSize);
+                    Entry nextElement = current.next;
+                    if (newTable[position] == null) {
+                        newTable[position] = current;
+                    }
+                    else {
+                        Entry head = newTable[position];
+                        while (head.next != null) {
+                            head = head.next;
+                        }
+                        head.next = current;
+                    }
+                    current.next = null;
+                    current = nextElement;
+                }
+            }
+            this.table = newTable;
+        }
     }
     
     public void add(String key, int value) {
-        int index = this.indexer(key);
-        Entry entry = new Entry(key, value);
-        if (this.table[index] == null) {
-            this.table[index] = entry;
+        tryGrow();
+        int position = this.index(key, this.table.length);
+        Entry head = this.table[position];
+        if (head == null) {
+            this.table[position] = new Entry(key, value);
+            this.elementCount++;
+            return;
         }
-        else {
-            Entry head = this.table[index];
-            while (head.next != null) {
-                if (head.key.equals(key)) {
-                    head.value = value;
-                    return;
-                }
-                head = head.next;
-            }
-            head.next = entry;
+        while (head.next != null && !head.key.equals(key)) {
+            head = head.next;
         }
-        this.entryCount++;
-        
-        float loadFactor = ((float)this.entryCount) / this.table.length;
-        if (loadFactor >= MAX_LOAD_FACTOR) {
-            Entry[] oldTable = this.table;
-            HashMap map = new HashMap(this.table.length * GROW_MULTIPLIER);
-            for (int i = 0; i < oldTable.length; i++) {
-                Entry head = oldTable[i];
-                while (head != null) {
-                    map.add(head.key, head.value);
-                    head = head.next;
-                }
-            }
-            this.table = map.table;
+        if (head.key.equals(key)) {
+            head.value = value;
+            return;
         }
+        head.next = new Entry(key, value);
+        this.elementCount++;
     }
     
     public int get(String key) {
-        int index = this.indexer(key);
-        if (this.table[index] == null) {
-            return -1;
+        int position = this.index(key, this.table.length);
+        Entry current = this.table[position];
+        while (current != null && !current.key.equals(key)) {
+            current = current.next;
         }
-        Entry head = this.table[index];
-        while (head != null) {
-            if (head.key.equals(key)) {
-                return head.value;
-            }
-            head = head.next;
+        if (current == null) {
+            throw new RuntimeException("No element with this key");
         }
-        return -1;
+        else {
+            return current.value;
+        }
     }
     
-    public void remove(String key) {
-        int index = this.indexer(key);
-        Entry head = this.table[index];
-        if (head.key.equals(key)) {
-            this.table[index] = null;
-            this.entryCount--;
-        }
-
-        while (head.next != null) {
-            if (head.next.key.equals(key)) {
-                head.next = head.next.next;
-                this.entryCount--;           
-                return;
-            }
-            head = head.next;
-        }
+    public int size() {
+        return this.elementCount;
     }
     
 }
