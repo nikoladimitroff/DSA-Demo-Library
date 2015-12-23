@@ -103,7 +103,7 @@ output -> false
 
 ### Treap
 
-A [treap](https://en.wikipedia.org/wiki/K-d_tree) is another form of a
+A [treap](https://en.wikipedia.org/wiki/Treap) is another form of a
 self-balancing tree with some interesting properties. Namely, a treap
 containing a fixed set of elements will always have the same structure,
 no matter what order that elements were inserted in. It also makes subtree
