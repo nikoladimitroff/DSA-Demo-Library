@@ -1,17 +1,21 @@
 Final course projects
 ======================
-Choose one of the projects below and fill this [form](http://goo.gl/forms/qrVNhLJ42I)
-BEFORE 11.01.2015, 23:59:59. If you fail to do so, you'll be assigned a project
-at random.
 
 All of the problems are *hard*. They require some research but because of
 that you've got plenty of time. Feel free to ask us about hints.
 
-* Your grade depends on 3 components - functionality, performance & code quality
-* You are **not** required to write in Java.
-* If none of the projects below fit you, you may suggest another one.
-* Your grade will be finalized after a successful defence during the last exerice or 2
-(your teaching assistant will give you more information)
+* Your grade depends on 3 components - functionality, performance & code quality.
+* You are **not** required to write in Java. All of the following languages are
+acceptable - Java, C#, C / C++, Python, JS.
+* If none of the projects below fit you, you may suggest another one. Contact your
+teaching assistant.
+* Your grade will be finalized after a successful defence.
+* Besides implementing the algorithms below, you **must** provide a demo application
+that can demonstrate that it works correctly.
+* The implementation's design is up to you. You can make a console app, a GUI
+mobile / desktop app, web app, a smart washing machine showing the result on its
+display. To make testing easier, it's a good idea to add an option to read the input
+from file.
 
 
 ### Mini-mathematica
@@ -35,38 +39,40 @@ Use [shunting yard](http://en.wikipedia.org/wiki/Shunting-yard_algorithm) and
 
 ### Indiana Jones
 Indiana Jones often faces difficult dilemmas in his travels. On his last journey
-into the crypt on a long-lost emperor he found countless treasures but he could
+into the crypt on a long-forgotten emperor he found countless treasures but he could
 only carry no more than *N* kilograms of loot on the way back. Help him make
 the most of the situation by solving the famous
 [*knapsack problem*](http://en.wikipedia.org/wiki/Knapsack_problem). Since
 he'll be using your program for some time, you are required to solve the problem
 using **both** dynamic programming **AND** branch & bound.
 
+You must also be able to read the input from a file with the following structure:
+
+```
+item value weight
+```
+
+For example:
+
+```
+chocolate 10 2
+golden-horn 100 10
+Skyrim 99999999999 5
+```
+
 ### Red-black AVL
-[Red-black](http://en.wikipedia.org/wiki/Red%E2%80%93black_tree) and
 [AVL](http://en.wikipedia.org/wiki/AVL_tree) trees are a form of self-balancing
 binary search trees.
 They are incredibly efficient and are widely used when implementing ordered
 dictionaries. Your job is to implement:
+
 * insertion
 * removal
 * searching
 * size
+* iteration
 
-for both trees (and of course, the self-balancing part).
-
-### We are up all night to get hacky
-[One-time padding (OTP)](http://en.wikipedia.org/wiki/One-time_pad) is a secure,
-but easy to break cryptographic algorithm if it is misused. All it does is given
-a input message `m` and a key `k` is to XOR them to produce the encrypted message
-`e` (`e = m ^ k`). Due to properties of XOR, decrypting is simply `m = e ^ k`.
-Unfortunately, if the same key is used to encrypted more than
-one sentence there's a relatively easy to way to get back the key and decrypt them
-all. Your task is precisely that.
-
-You'll be given several sentences encrypted with the same key. Your task is to
-decipher all of them and tell us the the secret message encrypted within. (hint: consider
-XORing a random ASCII letter with a space (ASCII code 32))
+(and of course, the self-balancing part).
 
 ### Regularize yourself
 Regular expressions are an incredibly useful tool in the arsenal of every programmer.
@@ -95,15 +101,74 @@ str = "abcc"
 output -> false
 ```
 
-Feel free to contact me (Nikola Dimitroff) in case you need extra guidance, resources
-or other info on this task.
+### Treap
 
-### Maximum flow
-Implement [Ford-Fulkerson's algorithm](http://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm)
-which computes the maximum flow of a given graph. Design tests / demo.
+A [treap](https://en.wikipedia.org/wiki/K-d_tree) is another form of a
+self-balancing tree with some interesting properties. Namely, a treap
+containing a fixed set of elements will always have the same structure,
+no matter what order that elements were inserted in. It also makes subtree
+sharing efficient which means set operations are pretty quick (union, intersection,
+set difference). Your task is to implement the following operations on treaps:
 
-### JPEG
-Your program should be able to display the colours of pixels in any given JPEG
-image. You **don't need to draw the actual colours**, it is enough to show their
-values as a text - for instance by
-displaying a two-dimensional array with the RGBA values of each pixel.
+* Insertion
+* Removal
+* Size
+* Find (test whether the element is in the treap)
+* Treap union
+* Treap intersection
+* Treap difference
+
+### KD-tree
+
+When making geometrically-intensive applications such as games, movies
+and architectural visualizations it is crucial to use fast algorithms.
+A key geometrical algorithm is to detect whether a point lies within
+a box or a circle. This is usually done by looping over all shapes
+and checking whether the point lies within it. The [kd-tree](https://en.wikipedia.org/wiki/K-d_tree)
+is a space-partitioning data structure that significantly improves this check
+by reducing the amount of shapes to test with.
+
+Your task is to implement the a program that can find all objects
+that a given point intersects with. Implement the check whether the 2D point
+lies within a circle and an axis-aligned rectangle. Use a kd-tree to
+discover the shapes to loop over.
+
+To make testing easier, your program should be able to read a file in the following format:
+
+```
+rect x y w h # defines a rectangle with top-left point at (x, y) with width w and height h
+circle x y r # defines a circle with center (x, y) and radius r
+```
+
+For example
+```
+rect 0 100 200 300 # a rectangle that starts at (0, 100) with width 200 and height 100
+circle 100 200 300 # circle centered at (100, 200) with radius 300
+```
+
+This file will be used to describes all geometrical objects and your program should allow
+the user to test for various points.
+
+You'll get bonus points for actually drawing the scene.
+
+### Bloom filter
+
+A bloom filter is a probabilstic data structure - it lets
+you check whether an element has been added to the collection
+(with a certain probability) in constant time but requires
+the usage of multiple hash functions.
+
+See detailed [description here](https://en.wikipedia.org/wiki/Bloom_filter).
+The bloom filter uses an array of booleans internally. To improve its performance
+one can replace the boolean array with a [bitset](https://en.wikipedia.org/wiki/Bit_array).
+This also reduces the memory usage by a factor of 8 because one only stores each boolean
+value in a single bit instead of a byte.
+
+Your task is to implement both i.e. your Bloom filter must use a bitset internally.
+We expect the following operations in the Bloom filter.
+
+* Insertion
+* Find (check whether an element has been added)
+* CurrentProbability - returns the probability that the bloom filter's result is correct
+
+You do **not** have to implement removal.
