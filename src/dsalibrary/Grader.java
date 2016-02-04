@@ -1,17 +1,19 @@
-package dsalibrary;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import royalprogrammer.IFrontBookkeeper;
+import royalprogrammer.FrontBookkeeperAuthor;
 
 /**
  * 
@@ -19,18 +21,15 @@ import java.util.regex.Pattern;
  * 
  */
 public class Grader {
-    private IBookIndexer authorEncoder;
+    private FrontBookkeeperAuthor authorEncoder;
 
-    private static List<Class<? extends IBookIndexer>> classesToBeGraded;
+    private static List<Class<? extends IFrontBookkeeper>> classesToBeGraded;
 
-    private List<IBookIndexer> instancesToBeGraded;
+    private List<IFrontBookkeeper> instancesToBeGraded;
 
-    private static List<Class<? extends IBookIndexer>> getWorks() throws ClassNotFoundException {
-        List<Class<? extends IBookIndexer>> result = new LinkedList<Class<? extends IBookIndexer>>();
-
-        File folder = new File("./src/");
+    private static void recurseWorks(File folder, List<Class<? extends IFrontBookkeeper>> result) throws ClassNotFoundException {
         File[] listOfFiles = folder.listFiles();
-        Pattern homeworkPattern = Pattern.compile("BookIndexer(\\d){5}.java");
+        Pattern homeworkPattern = Pattern.compile("FrontBookkeeper(\\d){5}.java");
 
         for (File file : listOfFiles) {
             if (file.isFile()) {
@@ -39,19 +38,27 @@ public class Grader {
                 if (matcher.find()) {
                     String className = fileName.replaceFirst(".java", "");
                     System.out.println("Adding class " + className + " for grading.");
-                    result.add((Class<? extends IBookIndexer>) Class.forName(className));
+                    result.add((Class<? extends IFrontBookkeeper>) Class.forName(className));
                 }
             }
+            else {
+                recurseWorks(file, result);
+            }
         }
+    }
+    private static List<Class<? extends IFrontBookkeeper>> getWorks() throws ClassNotFoundException {
+        List<Class<? extends IFrontBookkeeper>> result = new LinkedList<Class<? extends IFrontBookkeeper>>();
 
+        File folder = new File("./src/royalprogrammer/");
+        recurseWorks(folder, result);
         return result;
     }
 
-    private static List<IBookIndexer> getEncoderInstances(List<Class<? extends IBookIndexer>> classes)
+    private static List<IFrontBookkeeper> getEncoderInstances(List<Class<? extends IFrontBookkeeper>> classes)
         throws InstantiationException,
             IllegalAccessException {
-        List<IBookIndexer> result = new LinkedList<IBookIndexer>();
-        for (Class<? extends IBookIndexer> clazz : classes) {
+        List<IFrontBookkeeper> result = new LinkedList<>();
+        for (Class<? extends IFrontBookkeeper> clazz : classes) {
             result.add(clazz.newInstance());
         }
         return result;
@@ -60,45 +67,39 @@ public class Grader {
     public Grader() throws Exception {
         classesToBeGraded = getWorks();
         instancesToBeGraded = getEncoderInstances(classesToBeGraded);
-        authorEncoder = new AuthorBookIndexer();
+        authorEncoder = new FrontBookkeeperAuthor();
     }
 
-    public List<Double> gradeAllAgainst(String bookFile, String[] keywords)
+    public List<Double> gradeAllAgainst(String newsFile)
         throws Exception {
-        String authorOutFile = "author.out";
-        String gradedOutFile = "graded.out";
 
-        File aoutf = new File(gradedOutFile);
-    	aoutf.delete();
     	long authorTime=0;
+        String news = new String(Files.readAllBytes(Paths.get(newsFile)),
+                StandardCharsets.UTF_8);
+        String[] lines = news.split(System.lineSeparator());
+        String authorResult = null;
     	try {
-            // copy the keywords as some of you like to fiddle with them
-            String[] keywordsCopy = Arrays.copyOf(keywords, keywords.length);
             long authorStart = System.nanoTime();
-            authorEncoder.buildIndex(bookFile, keywordsCopy, authorOutFile);
+            authorResult = authorEncoder.updateFront(lines);
             authorTime = System.nanoTime() - authorStart;
     	} catch (Throwable t) {}
         System.out.println("Author result: " + Math.round(authorTime / 1000000.0) + "ms");
 
         
         List<Double> results = new LinkedList<Double>();
-        for (IBookIndexer work : instancesToBeGraded) {
-        	File outf = new File(gradedOutFile);
-        	outf.delete();
-            
-        	long workTime = 0;
+        for (IFrontBookkeeper work : instancesToBeGraded) {            
+            long workTime = 0;
+            String result = null;
             try {
                 long workStart = System.nanoTime();
-            	work.buildIndex(bookFile, keywords, gradedOutFile);
+            	result = work.updateFront(lines);
                 workTime = System.nanoTime() - workStart;
             } catch (Throwable t) {
                 workTime = -1;
             }
-
-            
             System.out.print(work.getClass().getName() + " result: ");
             if (workTime > 0) {
-                boolean correct = readAndCompareFiles(gradedOutFile, authorOutFile);
+                boolean correct = authorResult.replaceAll("\\s+","").equals(result != null ? result.replaceAll("\\s+","") : null);
                 if (correct) {
                     DecimalFormat df = new DecimalFormat("#.#####");
                     df.setRoundingMode(RoundingMode.HALF_UP);
@@ -125,26 +126,18 @@ public class Grader {
         Grader grader = new Grader();
 
         List<List<Double>> allResults = new ArrayList<List<Double>>(10);
-        String[] books = new String[] {
-            "moby-dick.txt", 
-            "hipster-lorem-ipsum.txt",
-            "turing.txt",
-            "cry-me-a-river.txt",
-            "bohemian-rhapsody.txt"
+        String[] tests = new String[] {
+            "deaths.txt", 
+            "interlist_removal.txt",
+            "juggling.txt",
+            "positional_attachment.txt",
+            "show_soldiers.txt"
         };
 
-        String[][] keywords = new String[][] {
-            new String[] { "chapter", "sea", "Ishmael", "whale", "see", "1839", "God"},
-            new String[] { "American", "beard", "vegan", "iphone", "YOLO", "kickstarter", "90", "hashtag", "bag", "8-bit", "food", "street", "mixtape", "helvetica", "photo", "wolf", "next", "cold-pressed", "post-ironic", "coffee", "mumblecore", "quinoa", "salvia", "pop-up", "try-hard", "moon", "polaroid", "craft", "tofu", "messenger", "bird", "selfies", "gluten-free", "ugh", "street", "pinterest", "leggings", "cleanse", "actually", "art", "blog", "readymade", "health", "wayfarers", "jean", "shorts", "lumbersexual", "tumblr", "retro", "single-origin", "artisan", "hoodie", "ethical", "freegan", "biodiesel", "letterpress", "mustache", "fashion", "banksy", "3"},
-            new String[] { "1948", "turing", "alan", "june", "test", "january", "1952", "professor", "prosecuted", "20", "19-year-old", "computer", "code", "cipher", "second", "world", "war", "mathematics", "science", "german", "39", "defence", "accused", "espionage", "death", "september", "breaking", "Church", "cambridge", "Entscheidungsproblem", "Christopher", "Morcom"},
-            new String[] { "2003", "Justin", "Spears", "cry", "award", "21", "FeBrUaRy"},
-            new String[] { "IS", "THIS", "NOTHING", "BOY", "GALILEO", "OOH", "THE", "JUST", "BISMILLAH"}
-        };
-
-        for (int i = 0; i < books.length; i++) {
+        for (int i = 0; i < tests.length; i++) {
             
-            System.out.println(String.format("\n\n=== Testing %s ===", books[i]));
-            List<Double> results = grader.gradeAllAgainst(books[i], keywords[i]);
+            System.out.println(String.format("\n\n=== Testing %s ===", tests[i]));
+            List<Double> results = grader.gradeAllAgainst(tests[i]);
             allResults.add(results);
         }
 
@@ -165,47 +158,5 @@ public class Grader {
             System.out.println(classesToBeGraded.get(i).getName() + ": " + df.format(finalResults[i]));
         }
 
-    }
-
-
-    /**
-     * Fetched from PatchedTestGen.java (some changes applied).
-     * 
-     * @param pathToCurrentFile
-     * @param pathToExpectedFile
-     * @return
-     */
-    private static boolean readAndCompareFiles(String pathToCurrentFile, String pathToExpectedFile) throws Exception {
-        InputStream current = null;
-        InputStream expected = null;
-        try {
-            current = new BufferedInputStream(new FileInputStream(pathToCurrentFile));
-            expected = new BufferedInputStream(new FileInputStream(pathToExpectedFile));
-            int currentChar;
-            int expectedChar;
-            while ((currentChar = current.read()) != -1 && (expectedChar = expected.read()) != -1) {
-                // ignore \r as this causes difference in the output
-                if (currentChar == '\r')
-                    currentChar = current.read();
-                if (expectedChar == '\r')
-                    expectedChar = expected.read();
-
-                if (currentChar != expectedChar) {
-                    return false;
-                }
-            }
-            if(current.read() != expected.read()) return false;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        } finally {
-            if (current != null) {
-                current.close();
-            }
-            if (expected != null) {
-                expected.close();
-            }
-        }
-        return true;
     }
 }
